@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { Bell, Search, User, ChevronDown, ShieldAlert } from 'lucide-react'
+import { Bell, Search, User, ChevronDown, ShieldAlert, Menu } from 'lucide-react'
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -8,7 +8,7 @@ const pageTitles = {
   '/reports': 'Raporlar',
 }
 
-function Navbar() {
+function Navbar({ isCollapsed, setIsCollapsed }) {
   const location = useLocation()
 
   const getTitle = () => {
@@ -30,8 +30,16 @@ function Navbar() {
   return (
     <header className="h-[64px] bg-[#0d1526]/90 backdrop-blur-xl border-b border-slate-800/50 flex items-center justify-between px-6 sticky top-0 z-40">
 
-      {/* ── Sol: Proje Adı + Sayfa Başlığı ── */}
+      {/* ── Sol: Hamburger Butonu + Proje Adı + Sayfa Başlığı ── */}
       <div className="flex items-center gap-4">
+        {/* Toggle Butonu */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 -ml-2 rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
         {/* Proje Adı */}
         <div className="flex items-center gap-2 pr-4 border-r border-slate-800/60">
           <ShieldAlert className="w-4 h-4 text-blue-400" />

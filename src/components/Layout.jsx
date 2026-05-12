@@ -13,11 +13,10 @@ function Layout() {
 
       {/* Ana İçerik Alanı */}
       <div 
-        className={`flex-1 min-w-0 flex flex-col min-h-screen transition-all duration-300 ${
-          isCollapsed ? 'ml-[80px]' : 'ml-[260px]'
-        }`}
+        className="flex-1 min-w-0 flex flex-col min-h-screen transition-all duration-300"
+        style={{ marginLeft: isCollapsed ? '0px' : '260px' }}
       >
-        <Navbar />
+        <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
         {/* Sayfa İçeriği */}
         <main className="flex-1 p-6 bg-[#0a1022]">
