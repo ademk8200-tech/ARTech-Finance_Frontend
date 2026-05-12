@@ -1,15 +1,22 @@
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 
 function Layout() {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
   return (
     <div className="flex min-h-screen bg-[#080d19]">
       {/* Sol Sidebar */}
-      <Sidebar />
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
       {/* Ana İçerik Alanı */}
-      <div className="flex-1 min-w-0 ml-[260px] flex flex-col min-h-screen">
+      <div 
+        className={`flex-1 min-w-0 flex flex-col min-h-screen transition-all duration-300 ${
+          isCollapsed ? 'ml-[80px]' : 'ml-[260px]'
+        }`}
+      >
         <Navbar />
 
         {/* Sayfa İçeriği */}
