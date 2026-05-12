@@ -9,7 +9,7 @@ function Layout() {
       <Sidebar />
 
       {/* Ana İçerik Alanı */}
-      <div className="flex-1 ml-[260px] flex flex-col min-h-screen">
+      <div className="flex-1 min-w-0 ml-[260px] flex flex-col min-h-screen">
         <Navbar />
 
         {/* Sayfa İçeriği */}
