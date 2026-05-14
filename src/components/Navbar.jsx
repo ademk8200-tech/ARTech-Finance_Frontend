@@ -1,82 +1,88 @@
-import { useLocation } from 'react-router-dom'
-import { Bell, Search, User, ChevronDown, ShieldAlert, Menu } from 'lucide-react'
+import { NavLink, useLocation } from 'react-router-dom'
+import { Bell, Search, User, ChevronDown, ShieldCheck, LayoutDashboard, ArrowLeftRight, Network, FileBarChart } from 'lucide-react'
 
-const pageTitles = {
-  '/': 'Dashboard',
-  '/transactions': 'İşlemler',
-  '/network': 'Ağ Analizi',
-  '/reports': 'Raporlar',
-}
+const navItems = [
+  {
+    to: '/',
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    to: '/transactions',
+    label: 'İşlemler',
+    icon: ArrowLeftRight,
+  },
+  {
+    to: '/network',
+    label: 'Ağ Analizi',
+    icon: Network,
+  },
+  {
+    to: '/reports',
+    label: 'Raporlar',
+    icon: FileBarChart,
+  },
+]
 
-function Navbar({ isCollapsed, setIsCollapsed }) {
+function Navbar() {
   const location = useLocation()
 
-  const getTitle = () => {
-    if (location.pathname.startsWith('/transactions/')) {
-      return 'İşlem Detayı'
-    }
-    return pageTitles[location.pathname] || 'Sayfa'
-  }
-
-  const getBreadcrumb = () => {
-    if (location.pathname.startsWith('/transactions/')) {
-      return ['İşlemler', 'Detay']
-    }
-    return null
-  }
-
-  const breadcrumb = getBreadcrumb()
-
   return (
-    <header className="h-[64px] bg-[#0d1526]/90 backdrop-blur-xl border-b border-slate-800/50 flex items-center justify-between px-6 sticky top-0 z-40">
+    <header className="h-[72px] bg-[#0b1120] border-b border-slate-800/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-between px-6 shrink-0 z-50">
 
-      {/* ── Sol: Hamburger Butonu + Proje Adı + Sayfa Başlığı ── */}
-      <div className="flex items-center gap-4">
-        {/* Toggle Butonu */}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-2 -ml-2 rounded-lg hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
-
-        {/* Proje Adı */}
-        <div className="flex items-center gap-2 pr-4 border-r border-slate-800/60">
-          <ShieldAlert className="w-4 h-4 text-blue-400" />
-          <span className="text-[11px] text-slate-500 font-medium tracking-wide hidden xl:inline">
-            Yapay Zeka Tabanlı Dinamik Kara Para Takip Sistemi
-          </span>
-          <span className="text-[11px] text-slate-500 font-medium tracking-wide xl:hidden">
-            AML Takip
-          </span>
+      {/* ── Sol: Logo ve Proje Adı ── */}
+      <div className="flex items-center gap-3 w-auto md:w-[260px] shrink-0">
+        <div className="relative shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <ShieldCheck className="w-5 h-5 text-white" />
+          </div>
+          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0b1120] animate-pulse" />
         </div>
-
-        {/* Sayfa Başlığı veya Breadcrumb */}
-        <div className="flex items-center gap-2">
-          {breadcrumb ? (
-            <div className="flex items-center gap-1.5 text-sm">
-              <span className="text-slate-500">{breadcrumb[0]}</span>
-              <span className="text-slate-700">/</span>
-              <span className="text-white font-semibold">{breadcrumb[1]}</span>
-            </div>
-          ) : (
-            <h2 className="text-[15px] font-semibold text-white">{getTitle()}</h2>
-          )}
+        <div className="hidden sm:block overflow-hidden whitespace-nowrap">
+          <h1 className="text-[15px] font-bold text-white tracking-tight leading-tight">
+            ARTech Finance
+          </h1>
+          <p className="text-[10px] text-slate-500 font-medium tracking-wider uppercase mt-0.5">
+            AML Takip
+          </p>
         </div>
       </div>
 
-      {/* ── Sağ: Arama + Bildirim + Kullanıcı ── */}
-      <div className="flex items-center gap-3">
+      {/* ── Orta: Navigasyon Linkleri ── */}
+      <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
+        {navItems.map((item) => {
+          const isTransactionDetail = item.to === '/transactions' && location.pathname.startsWith('/transactions/')
+          const isActive = location.pathname === item.to || isTransactionDetail
+          
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group ${
+                isActive ? 'text-blue-400 bg-slate-800' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <item.icon className="w-4 h-4" />
+              <span>{item.label}</span>
+              {isActive && (
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] rounded-t-full" />
+              )}
+            </NavLink>
+          )
+        })}
+      </nav>
 
+      {/* ── Sağ: Arama + Bildirim + Kullanıcı ── */}
+      <div className="flex items-center gap-3 shrink-0">
         {/* Arama */}
         <div className="flex items-center gap-2 bg-slate-800/40 hover:bg-slate-800/70 rounded-lg px-3 py-2 border border-slate-700/30 transition-colors duration-200 group">
           <Search className="w-4 h-4 text-slate-500 group-hover:text-slate-400 transition-colors" />
           <input
             type="text"
-            placeholder="İşlem, hesap veya kişi ara…"
-            className="bg-transparent border-none outline-none text-sm text-slate-200 placeholder-slate-600 w-56 focus:placeholder-slate-500"
+            placeholder="Ara…"
+            className="bg-transparent border-none outline-none text-sm text-slate-200 placeholder-slate-600 w-24 lg:w-48 focus:placeholder-slate-500"
           />
-          <kbd className="text-[10px] text-slate-600 bg-slate-800 border border-slate-700/50 px-1.5 py-0.5 rounded font-mono">
+          <kbd className="text-[10px] text-slate-600 bg-slate-800 border border-slate-700/50 px-1.5 py-0.5 rounded font-mono hidden xl:inline-block">
             ⌘K
           </kbd>
         </div>
@@ -84,14 +90,13 @@ function Navbar({ isCollapsed, setIsCollapsed }) {
         {/* Bildirimler */}
         <button className="relative p-2 rounded-lg hover:bg-slate-800/60 transition-all duration-200 text-slate-500 hover:text-slate-300 group">
           <Bell className="w-[18px] h-[18px]" />
-          {/* Bildirim sayısı */}
-          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0d1526] shadow-lg shadow-red-500/30">
+          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0b1120] shadow-lg shadow-red-500/30">
             3
           </span>
         </button>
 
         {/* Ayırıcı */}
-        <div className="w-px h-8 bg-slate-800/60" />
+        <div className="w-px h-8 bg-slate-800/60 hidden sm:block" />
 
         {/* Kullanıcı */}
         <button className="flex items-center gap-2.5 pl-1 pr-2 py-1.5 rounded-lg hover:bg-slate-800/40 transition-all duration-200 group">
@@ -99,15 +104,15 @@ function Navbar({ isCollapsed, setIsCollapsed }) {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-md shadow-blue-500/15">
               <User className="w-4 h-4 text-white" />
             </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0d1526]" />
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0b1120]" />
           </div>
-          <div className="text-left">
+          <div className="text-left hidden lg:block">
             <p className="text-[12px] text-slate-300 font-medium leading-tight group-hover:text-white transition-colors">
               Uyum Analisti
             </p>
             <p className="text-[10px] text-slate-600 leading-tight">Yönetici</p>
           </div>
-          <ChevronDown className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 transition-colors" />
+          <ChevronDown className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 transition-colors hidden sm:block" />
         </button>
       </div>
     </header>

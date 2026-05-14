@@ -54,8 +54,8 @@ function formatCompact(value) {
 
 /** Risk skoruna göre renk döndürür */
 function getRiskColor(score) {
-  if (score >= 70) return { text: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', dot: 'bg-red-500' }
-  if (score >= 40) return { text: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20', dot: 'bg-amber-500' }
+  if (score >= 80) return { text: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', dot: 'bg-red-500' }
+  if (score >= 50) return { text: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20', dot: 'bg-amber-500' }
   return { text: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-500' }
 }
 
@@ -226,7 +226,7 @@ function Dashboard() {
           trend="up"
           trendValue="+1"
           color="bg-purple-500/10 text-purple-400"
-          subtitle="Risk skoru > 70"
+          subtitle="Risk skoru >= 80"
         />
         <StatCard
           title="İşlem Hacmi"

@@ -51,8 +51,8 @@ function NetworkAnalysis() {
       for (let i = 11; i <= 160; i++) {
         const riskRand = Math.random();
         let riskScore = 0;
-        if (riskRand < 0.6) riskScore = Math.floor(Math.random() * 40);
-        else if (riskRand < 0.9) riskScore = 40 + Math.floor(Math.random() * 40);
+        if (riskRand < 0.6) riskScore = Math.floor(Math.random() * 50);
+        else if (riskRand < 0.9) riskScore = 50 + Math.floor(Math.random() * 30);
         else riskScore = 80 + Math.floor(Math.random() * 21);
 
         const type = ENTITY_TYPES[Math.floor(Math.random() * ENTITY_TYPES.length)];
@@ -62,7 +62,7 @@ function NetworkAnalysis() {
           label: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
           ownerName: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
           riskScore,
-          riskLevel: riskScore >= 80 ? 'Yüksek' : riskScore >= 40 ? 'Orta' : 'Düşük',
+          riskLevel: riskScore >= 80 ? 'Yüksek' : riskScore >= 50 ? 'Orta' : 'Düşük',
           type: type,
           accountType: type
         });
@@ -256,7 +256,7 @@ function NetworkAnalysis() {
   }, [showEdgeLabels]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] space-y-4">
+    <div className="flex flex-col h-[calc(100vh-160px)] space-y-4">
       <div className="flex flex-1 gap-4 min-h-0 overflow-hidden">
         
         {/* Graph Container */}
@@ -303,7 +303,6 @@ function NetworkAnalysis() {
               linkCanvasObjectMode={() => showEdgeLabels ? "after" : undefined}
               linkCanvasObject={paintLink}
               onNodeClick={(node) => {
-                console.log("Doğrudan tıklanan node objesi:", node);
                 setSelectedNodeData(node);
               }}
               onBackgroundClick={() => setSelectedNodeData(null)}
@@ -376,11 +375,11 @@ function NetworkAnalysis() {
                 <div className="text-center pt-2">
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-sm border-2 ${
                     selectedNodeData.riskScore >= 80 ? 'bg-red-50 text-red-500 border-red-100' : 
-                    selectedNodeData.riskScore >= 40 ? 'bg-orange-50 text-orange-500 border-orange-100' : 
+                    selectedNodeData.riskScore >= 50 ? 'bg-orange-50 text-orange-500 border-orange-100' : 
                     'bg-green-50 text-green-500 border-green-100'
                   }`}>
                     {selectedNodeData.riskScore >= 80 ? <AlertTriangle className="w-8 h-8" /> : 
-                     selectedNodeData.riskScore >= 40 ? <Activity className="w-8 h-8" /> : 
+                     selectedNodeData.riskScore >= 50 ? <Activity className="w-8 h-8" /> : 
                      <ShieldCheck className="w-8 h-8" />}
                   </div>
                   <h3 className="text-xl font-bold text-slate-800">{selectedNodeData.label || selectedNodeData.ownerName}</h3>
@@ -396,7 +395,7 @@ function NetworkAnalysis() {
                     <span className="text-slate-500 text-sm font-medium">Risk Skoru</span>
                     <span className={`font-bold ${
                       selectedNodeData.riskScore >= 80 ? 'text-red-500' : 
-                      selectedNodeData.riskScore >= 40 ? 'text-orange-500' : 
+                      selectedNodeData.riskScore >= 50 ? 'text-orange-500' : 
                       'text-green-500'
                     }`}>{selectedNodeData.riskScore} / 100</span>
                   </div>
@@ -406,7 +405,7 @@ function NetworkAnalysis() {
                   <p className="text-sm text-slate-700 leading-relaxed">
                     {selectedNodeData.riskScore >= 80 
                       ? "Bu hesap ağ üzerinde kritik ve yüksek riskli bağlantılara sahip. Yüksek riskli işlemler izlenmektedir."
-                      : selectedNodeData.riskScore >= 40
+                      : selectedNodeData.riskScore >= 50
                       ? "Şüpheli para transfer örüntüleri (sık tekrarlayan işlemler vs.) bulunuyor. İncelemeye alınması tavsiye edilir."
                       : "Ağ üzerindeki işlemleri genellikle normal ticari/bireysel akışlarla uyumlu ve risksiz görünmektedir."}
                   </p>
