@@ -39,51 +39,10 @@ function NetworkAnalysis() {
       target: String(typeof e.target === 'object' ? e.target.id : e.target),
     }));
 
-    const firstNames = ["Ahmet", "Mehmet", "Ayşe", "Fatma", "Global", "Tech", "Crypto", "Holdings", "Trade"];
-    const lastNames = ["Yılmaz", "Kaya", "A.Ş.", "Ltd.", "GmbH", "LLC"];
-
-    const generatedNodes = [];
-    for (let i = 11; i <= 90; i++) {
-      const riskRand = Math.random();
-      let riskScore = 0;
-      if (riskRand < 0.6) riskScore = Math.floor(Math.random() * 50);
-      else if (riskRand < 0.9) riskScore = 50 + Math.floor(Math.random() * 30);
-      else riskScore = 80 + Math.floor(Math.random() * 21);
-
-      const type = ENTITY_TYPES[Math.floor(Math.random() * ENTITY_TYPES.length)];
-      generatedNodes.push({
-        id: `gen-acc-${i}`,
-        label: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
-        ownerName: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
-        riskScore,
-        riskLevel: riskScore >= 80 ? 'Yüksek' : riskScore >= 50 ? 'Orta' : 'Düşük',
-        type,
-        accountType: type,
-      });
-    }
-
-    const allNodes = [...baseNodes, ...generatedNodes];
+    const allNodes = baseNodes;
     const validIds = new Set(allNodes.map(n => n.id));
 
-    const hubs = [];
-    for (let h = 0; h < 10; h++) {
-      hubs.push(allNodes[Math.floor(Math.random() * allNodes.length)]);
-    }
-
-    const generatedEdges = [];
-    for (let e = 0; e < 100; e++) {
-      const isHub = Math.random() > 0.4;
-      const source = isHub
-        ? hubs[Math.floor(Math.random() * hubs.length)].id
-        : allNodes[Math.floor(Math.random() * allNodes.length)].id;
-      const target = allNodes[Math.floor(Math.random() * allNodes.length)].id;
-      if (source !== target) {
-        generatedEdges.push({ source, target, amount: Math.floor(Math.random() * 500000) });
-      }
-    }
-
-    const allEdges = [...baseEdges, ...generatedEdges]
-      .filter(e => validIds.has(e.source) && validIds.has(e.target));
+    const allEdges = baseEdges.filter(e => validIds.has(e.source) && validIds.has(e.target));
 
     // G6 v5 format: { id, data } for nodes, { id, source, target, data } for edges
     return {

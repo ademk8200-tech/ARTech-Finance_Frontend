@@ -24,12 +24,8 @@ import {
   Cell,
   Legend,
 } from 'recharts'
-import {
-  dashboardStats,
-  suspiciousTrend,
-  riskDistribution,
-} from '../data/mockData'
 import { getTransactions } from '../services/transactionService'
+import { getDashboardStats, getSuspiciousTrend, getRiskDistribution } from '../services/dashboardService'
 
 // ─────────────────────────────────────────────
 // Yardımcı Fonksiyonlar
@@ -135,11 +131,11 @@ function TrendTooltip({ active, payload, label }) {
 }
 
 /** Recharts PieChart özel legend */
-function CustomLegend({ payload }) {
+function CustomLegend({ payload, data }) {
   return (
     <div className="flex flex-col gap-3 pl-4">
       {payload?.map((entry, index) => {
-        const item = riskDistribution[index]
+        const item = data?.[index]
         return (
           <div key={entry.value} className="flex items-center gap-3">
             <span
@@ -166,11 +162,22 @@ function CustomLegend({ payload }) {
 function Dashboard() {
   const navigate = useNavigate()
   const [transactions, setTransactions] = useState([])
+  const [dashboardStats, setDashboardStats] = useState(null)
+  const [suspiciousTrend, setSuspiciousTrend] = useState([])
+  const [riskDistribution, setRiskDistribution] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getTransactions().then(data => {
-      setTransactions(data || [])
+    Promise.all([
+      getTransactions(),
+      getDashboardStats(),
+      getSuspiciousTrend(),
+      getRiskDistribution()
+    ]).then(([txns, stats, trend, risk]) => {
+      setTransactions(txns || [])
+      setDashboardStats(stats)
+      setSuspiciousTrend(trend || [])
+      setRiskDistribution(risk || [])
       setLoading(false)
     })
   }, [])
@@ -351,7 +358,7 @@ function Dashboard() {
                 layout="vertical"
                 align="right"
                 verticalAlign="middle"
-                content={<CustomLegend />}
+                content={(props) => <CustomLegend {...props} data={riskDistribution} />}
               />
             </PieChart>
           </ResponsiveContainer>
