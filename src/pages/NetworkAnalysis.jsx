@@ -318,8 +318,8 @@ function NetworkAnalysis() {
               <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="text-center pt-2">
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-sm border-2 ${selectedNodeData.riskScore >= 80 ? 'bg-red-50 text-red-500 border-red-100' :
-                      selectedNodeData.riskScore >= 50 ? 'bg-orange-50 text-orange-500 border-orange-100' :
-                        'bg-green-50 text-green-500 border-green-100'
+                    selectedNodeData.riskScore >= 50 ? 'bg-orange-50 text-orange-500 border-orange-100' :
+                      'bg-green-50 text-green-500 border-green-100'
                     }`}>
                     {selectedNodeData.riskScore >= 80 ? <AlertTriangle className="w-8 h-8" /> :
                       selectedNodeData.riskScore >= 50 ? <Activity className="w-8 h-8" /> :
@@ -337,8 +337,8 @@ function NetworkAnalysis() {
                   <div className="flex justify-between items-center pb-1">
                     <span className="text-slate-500 text-sm font-medium">Risk Skoru</span>
                     <span className={`font-bold ${selectedNodeData.riskScore >= 80 ? 'text-red-500' :
-                        selectedNodeData.riskScore >= 50 ? 'text-orange-500' :
-                          'text-green-500'
+                      selectedNodeData.riskScore >= 50 ? 'text-orange-500' :
+                        'text-green-500'
                       }`}>{selectedNodeData.riskScore} / 100</span>
                   </div>
                 </div>
