@@ -119,7 +119,7 @@ const Login = () => {
 
       {/* Top Left Brand */}
       <div className="absolute top-6 left-8 flex items-center gap-2 z-10">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-lg border border-white/20 bg-white/5 flex items-center justify-center">
           <ShieldCheck className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -137,13 +137,11 @@ const Login = () => {
 
       {/* Main Login Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white/[0.03] backdrop-blur-md border border-white/15 rounded-2xl p-8 shadow-2xl">
           
           {/* Header */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/20">
-              <ShieldCheck className="w-8 h-8 text-white" />
-            </div>
+
             <h2 className="text-2xl font-bold text-white mb-2">Denetçi Paneli Girişi</h2>
             <p className="text-sm text-slate-400 text-center">Hesabınıza erişmek için giriş yapın</p>
           </div>
@@ -208,7 +206,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+                <a href="#" className="font-medium text-white/60 hover:text-white transition-colors">
                   Şifremi unuttum
                 </a>
               </div>
@@ -234,9 +232,9 @@ const Login = () => {
         
         {/* Demo Notice */}
         <div className="mt-8 text-center">
-          <div className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-            <span className="text-xs font-medium text-blue-300">
-              <strong className="text-blue-400">Demo Modu:</strong> Herhangi bir e-posta ve şifre ile giriş yapabilirsiniz.
+          <div className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-white/5 border border-white/10">
+            <span className="text-xs font-medium text-white/40">
+              <strong className="text-white/60">Demo Modu:</strong> Herhangi bir e-posta ve şifre ile giriş yapabilirsiniz.
             </span>
           </div>
         </div>
