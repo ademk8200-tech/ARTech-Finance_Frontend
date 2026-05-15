@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowUpRight,
@@ -28,8 +28,8 @@ import {
   dashboardStats,
   suspiciousTrend,
   riskDistribution,
-  transactions,
 } from '../data/mockData'
+import { getTransactions } from '../services/transactionService'
 
 // ─────────────────────────────────────────────
 // Yardımcı Fonksiyonlar
@@ -165,19 +165,36 @@ function CustomLegend({ payload }) {
 
 function Dashboard() {
   const navigate = useNavigate()
+  const [transactions, setTransactions] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getTransactions().then(data => {
+      setTransactions(data || [])
+      setLoading(false)
+    })
+  }, [])
 
   // En yüksek riskli 5 işlemi hesapla
   const topRiskTransactions = useMemo(() => {
     return [...transactions]
       .sort((a, b) => b.riskScore - a.riskScore)
       .slice(0, 5)
-  }, [])
+  }, [transactions])
 
   return (
     <div className="space-y-6">
 
-      {/* ── Başlık ── */}
-      <div className="flex items-center justify-between">
+      {loading && (
+        <div className="flex items-center justify-center h-32">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {!loading && (
+        <>
+          {/* ── Başlık ── */}
+          <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-white">Genel Bakış</h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -241,7 +258,7 @@ function Dashboard() {
       <div className="grid grid-cols-3 gap-4">
 
         {/* Şüpheli İşlem Trendi — 2 sütun genişliğinde */}
-        <div className="col-span-2 bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5">
+        <div className="col-span-2 bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', minHeight: 350 }}>
           <div className="flex items-center justify-between mb-5">
             <div>
               <h3 className="text-sm font-semibold text-white">Şüpheli İşlem Trendi</h3>
@@ -308,7 +325,7 @@ function Dashboard() {
         </div>
 
         {/* Risk Dağılımı — 1 sütun genişliğinde */}
-        <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5">
+        <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', minHeight: 340 }}>
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-white">Risk Dağılımı</h3>
             <p className="text-[11px] text-slate-500 mt-0.5">Toplam {dashboardStats.totalTransactions.toLocaleString('tr-TR')} işlem</p>
@@ -417,6 +434,8 @@ function Dashboard() {
           )
         })}
       </div>
+        </>
+      )}
     </div>
   )
 }

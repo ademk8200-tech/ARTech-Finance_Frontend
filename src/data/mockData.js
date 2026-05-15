@@ -30,6 +30,19 @@ export const transactions = [
     pattern: "Smurfing",
     explanation:
       "10.000 TL eşiğinin hemen altında ardışık transfer tespit edildi. Son 3 gün içinde aynı gönderici 4 kez benzer tutarda işlem yapmış.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-002",
@@ -44,6 +57,19 @@ export const transactions = [
     pattern: "Yüksek Tutar Transferi",
     explanation:
       "Hesap profiline göre olağandışı yüksek tutar. Hesap sahibinin aylık ortalama işlem hacmi 15.000 TL iken tek seferde 245.000 TL gönderilmiş.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-003",
@@ -57,6 +83,10 @@ export const transactions = [
     status: "Normal",
     pattern: "Normal İşlem",
     explanation: "Düzenli maaş ödemesi ile uyumlu transfer. Risk skoru eşik altında.",
+    xaiReasons: [],
+    importantNodes: [],
+    importantEdges: [],
+    featureImportance: []
   },
   {
     id: "TXN-004",
@@ -71,6 +101,19 @@ export const transactions = [
     pattern: "Smurfing",
     explanation:
       "10.000 TL raporlama eşiğinin hemen altında yapılan transfer. Aynı gönderici son 48 saatte 3 benzer işlem gerçekleştirmiş.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-005",
@@ -85,6 +128,19 @@ export const transactions = [
     pattern: "Sık Tekrarlanan İşlem",
     explanation:
       "Son 7 gün içinde aynı alıcıya 12 adet küçük tutarlı döviz transferi yapılmış. Yapılandırma şüphesi mevcut.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-006",
@@ -98,6 +154,10 @@ export const transactions = [
     status: "Normal",
     pattern: "Normal İşlem",
     explanation: "Ticari hesaplar arası olağan ödeme. Geçmiş işlem profili ile uyumlu.",
+    xaiReasons: [],
+    importantNodes: [],
+    importantEdges: [],
+    featureImportance: []
   },
   {
     id: "TXN-007",
@@ -112,6 +172,19 @@ export const transactions = [
     pattern: "Fan-in/Fan-out",
     explanation:
       "Hesaba 5 farklı kaynaktan toplam 75.000 TL gelmiş ve aynı gün tek bir hesaba aktarılmış. Klasik fan-in/fan-out yapısı.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-008",
@@ -126,6 +199,19 @@ export const transactions = [
     pattern: "Yüksek Tutar Transferi",
     explanation:
       "Yeni açılan hesaptan yüksek tutarlı transfer. Hesap açılış tarihi: 2 hafta önce. Müşteri profili ile orantısız hacim.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-009",
@@ -140,6 +226,19 @@ export const transactions = [
     pattern: "Sık Tekrarlanan İşlem",
     explanation:
       "Yurtdışı hesaba düzenli döviz çıkışı. Son 30 günde 8 benzer işlem tespit edildi. Toplam çıkış tutarı 41.600 EUR.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-010",
@@ -154,6 +253,19 @@ export const transactions = [
     pattern: "Smurfing",
     explanation:
       "Raporlama eşiği altında tekrarlayan transfer. Gönderici hesap son 5 günde 6 farklı alıcıya benzer tutarlarda havale yapmış.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-011",
@@ -167,6 +279,10 @@ export const transactions = [
     status: "Normal",
     pattern: "Normal İşlem",
     explanation: "Düzenli kira ödemesi. Aylık tekrarlayan işlem profili ile uyumlu.",
+    xaiReasons: [],
+    importantNodes: [],
+    importantEdges: [],
+    featureImportance: []
   },
   {
     id: "TXN-012",
@@ -181,6 +297,19 @@ export const transactions = [
     pattern: "Fan-in/Fan-out",
     explanation:
       "Birden fazla hesaptan toplanan fonlar tek bir hesaba yönlendirilmiş. Transfer zincirinde 3 ara hesap kullanılmış.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-013",
@@ -194,6 +323,10 @@ export const transactions = [
     status: "Normal",
     pattern: "Normal İşlem",
     explanation: "Tedarikçi ödemesi. İşlem geçmişiyle uyumlu rutin transfer.",
+    xaiReasons: [],
+    importantNodes: [],
+    importantEdges: [],
+    featureImportance: []
   },
   {
     id: "TXN-014",
@@ -208,6 +341,19 @@ export const transactions = [
     pattern: "Smurfing",
     explanation:
       "Eşik altı transfer dizisi. Gönderici ve alıcı arasında son 10 günde 7 işlem tespit edildi.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-015",
@@ -222,6 +368,19 @@ export const transactions = [
     pattern: "Yüksek Tutar Transferi",
     explanation:
       "Bireysel hesaptan kurumsal hesaba olağandışı yüksek tutar. Hesap sahibinin beyan ettiği gelir düzeyi ile orantısız.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-016",
@@ -235,6 +394,10 @@ export const transactions = [
     status: "Normal",
     pattern: "Normal İşlem",
     explanation: "Market alışverişi ödemesi. Küçük tutarlı rutin işlem.",
+    xaiReasons: [],
+    importantNodes: [],
+    importantEdges: [],
+    featureImportance: []
   },
   {
     id: "TXN-017",
@@ -249,6 +412,19 @@ export const transactions = [
     pattern: "Sık Tekrarlanan İşlem",
     explanation:
       "Son 2 hafta içinde aynı alıcıya 5 transfer. Toplam tutar 140.000 TL. Parçalama şüphesi değerlendiriliyor.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-018",
@@ -263,6 +439,19 @@ export const transactions = [
     pattern: "Fan-in/Fan-out",
     explanation:
       "3 farklı hesaptan gelen fonlar birleştirilerek tek hesaba yönlendirilmiş. Ara hesap olarak kullanıldığı değerlendirilmektedir.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-019",
@@ -277,6 +466,19 @@ export const transactions = [
     pattern: "Smurfing",
     explanation:
       "10.000 TL altında sistematik transfer. Bu gönderici-alıcı çifti arasında son 1 ayda 11 işlem kaydı mevcut.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
   {
     id: "TXN-020",
@@ -291,6 +493,19 @@ export const transactions = [
     pattern: "Sık Tekrarlanan İşlem",
     explanation:
       "Yurtdışına sık aralıklarla küçük tutarlı döviz transferi. Son 3 haftada toplam 14.700 USD çıkış yapılmış.",
+    xaiReasons: [
+      "İşlem tutarı geçmiş ortalamanın üzerinde",
+      "Kaynak hesap kısa sürede çoklu hesaba aktarım yapmış",
+      "Alıcı hesap son 30 günde 8 farklı şüpheli işlemde geçmiş"
+    ],
+    importantNodes: ["ACC-001", "ACC-004"],
+    importantEdges: [["ACC-001", "ACC-004"], ["ACC-004", "ACC-007"]],
+    featureImportance: [
+      { feature: "İşlem Tutarı", impact: 0.34 },
+      { feature: "Hesap Yaşı", impact: 0.28 },
+      { feature: "Bağlantı Sayısı", impact: 0.22 },
+      { feature: "Zaman Örüntüsü", impact: 0.16 }
+    ]
   },
 ]
 

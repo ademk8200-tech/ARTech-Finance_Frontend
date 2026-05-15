@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FileBarChart, AlertTriangle, FileText, Download, X, ShieldAlert } from 'lucide-react';
-import { transactions } from '../data/mockData';
+import { getTransactions } from '../services/transactionService';
 
 function Reports() {
   const [selectedTx, setSelectedTx] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getTransactions().then(data => {
+      setTransactions(data || []);
+      setLoading(false);
+    });
+  }, []);
 
   // 1. Veri Kaynağı ve Kısıtlamalar: Sadece Şüpheli ve İncelemede olanlar
   const filteredTransactions = transactions.filter(
@@ -28,7 +37,15 @@ function Reports() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {loading && (
+        <div className="flex items-center justify-center h-32">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {!loading && (
+        <>
+          <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <FileBarChart className="w-8 h-8 text-blue-400" />
           <div>
@@ -195,6 +212,8 @@ function Reports() {
         </div>
       )}
 
+        </>
+      )}
     </div>
   );
 }

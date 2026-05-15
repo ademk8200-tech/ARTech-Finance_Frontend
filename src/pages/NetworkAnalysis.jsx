@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Graph } from '@antv/g6';
-import { networkData } from '../data/mockData';
+import { getNetworkData } from '../services/networkService';
 import { RefreshCw, Maximize, Network, AlertTriangle, Activity, ShieldCheck } from 'lucide-react';
 
 // MiroFish Color Palette
@@ -18,6 +18,14 @@ function NetworkAnalysis() {
   const [selectedNodeData, setSelectedNodeData] = useState(null);
   const [showEdgeLabels, setShowEdgeLabels] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  const [networkData, setNetworkData] = useState({ nodes: [], edges: [] });
+
+  // TODO: Bir node seçildiğinde, eğer işlem detayı arasında importantNodes/importantEdges varsa onları kırmızı border ile vurgulamak için kod eklenecek.
+
+  useEffect(() => {
+    getNetworkData().then(data => setNetworkData(data || { nodes: [], edges: [] }));
+  }, []);
 
   // Mock data oluştur
   const buildData = useCallback(() => {
@@ -87,7 +95,7 @@ function NetworkAnalysis() {
         data: { amount: e.amount },
       })),
     };
-  }, []);
+  }, [networkData]);
 
   // Tüm state'leri temizle
   const clearStates = (graph) => {

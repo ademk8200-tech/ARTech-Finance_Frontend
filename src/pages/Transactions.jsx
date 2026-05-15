@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowLeftRight,
@@ -10,7 +10,7 @@ import {
   ChevronRight,
   AlertTriangle,
 } from 'lucide-react'
-import { transactions } from '../data/mockData'
+import { getTransactions } from '../services/transactionService'
 
 // Helper functions
 function formatCurrency(value) {
@@ -60,6 +60,16 @@ function Transactions() {
   const [statusFilter, setStatusFilter] = useState('Tümü')
   const [riskFilter, setRiskFilter] = useState('Tümü')
   const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'desc' })
+  const [transactions, setTransactions] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getTransactions().then(data => {
+      console.log('getTransactions result:', data)
+      setTransactions(data || [])
+      setLoading(false)
+    })
+  }, [])
 
   // Filtering and Sorting logic
   const filteredAndSortedTransactions = useMemo(() => {
@@ -109,7 +119,7 @@ function Transactions() {
     }
 
     return result
-  }, [searchTerm, statusFilter, riskFilter, sortConfig])
+  }, [transactions, searchTerm, statusFilter, riskFilter, sortConfig])
 
   const handleSort = (key) => {
     let direction = 'asc'
@@ -121,8 +131,16 @@ function Transactions() {
 
   return (
     <div className="space-y-6">
-      {/* ── Başlık ── */}
-      <div className="flex items-center justify-between">
+      {loading && (
+        <div className="flex items-center justify-center h-32">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {!loading && (
+        <>
+          {/* ── Başlık ── */}
+          <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
             <ArrowLeftRight className="w-5 h-5 text-blue-400" />
@@ -313,6 +331,8 @@ function Transactions() {
           </table>
         </div>
       </div>
+        </>
+      )}
     </div>
   )
 }

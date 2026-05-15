@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
@@ -13,7 +14,9 @@ import {
   Calendar,
   CreditCard,
 } from 'lucide-react'
-import { transactions, accounts } from '../data/mockData'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { getTransactionById } from '../services/transactionService'
+import { getAccountById } from '../services/accountService'
 
 // Helper functions
 function formatCurrency(value) {
@@ -96,9 +99,57 @@ function generateRiskReasons(pattern) {
 function TransactionDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  
+  const [txn, setTxn] = useState(null)
+  const [senderAcc, setSenderAcc] = useState(null)
+  const [receiverAcc, setReceiverAcc] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  // Find the transaction
-  const txn = transactions.find(t => t.id === id)
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      const transaction = await getTransactionById(id)
+      if (transaction) {
+        setTxn(transaction)
+        
+        // Mock IBAN to ACC ID logic
+        const getAccId = (iban) => iban ? "ACC-" + iban.slice(-3) : null;
+        
+        const sAccId = getAccId(transaction.senderAccount)
+        const rAccId = getAccId(transaction.receiverAccount)
+        
+        const [sAcc, rAcc] = await Promise.all([
+          sAccId ? getAccountById(sAccId) : Promise.resolve(null),
+          rAccId ? getAccountById(rAccId) : Promise.resolve(null)
+        ])
+        
+        setSenderAcc(sAcc || {
+          ownerName: 'Bilinmeyen Hesap',
+          accountType: 'Bireysel',
+          riskLevel: 'Bilinmiyor',
+          riskScore: 50
+        })
+        
+        setReceiverAcc(rAcc || {
+          ownerName: 'Bilinmeyen Hesap',
+          accountType: 'Kurumsal',
+          riskLevel: 'Bilinmiyor',
+          riskScore: 50
+        })
+      }
+      setLoading(false)
+    }
+    
+    fetchData()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    )
+  }
 
   if (!txn) {
     return (
@@ -114,27 +165,6 @@ function TransactionDetail() {
         </button>
       </div>
     )
-  }
-
-  // Map IBAN to ACC-XXX format to find the account details
-  function findAccountByIban(iban) {
-    if (!iban) return null;
-    const accId = "ACC-" + iban.slice(-3);
-    return accounts.find(a => a.id === accId);
-  }
-
-  const senderAcc = findAccountByIban(txn.senderAccount) || {
-    ownerName: 'Bilinmeyen Hesap',
-    accountType: 'Bireysel',
-    riskLevel: 'Bilinmiyor',
-    riskScore: 50
-  }
-  
-  const receiverAcc = findAccountByIban(txn.receiverAccount) || {
-    ownerName: 'Bilinmeyen Hesap',
-    accountType: 'Kurumsal',
-    riskLevel: 'Bilinmiyor',
-    riskScore: 50
   }
 
   const riskStyle = getRiskColor(txn.riskScore)
@@ -376,6 +406,64 @@ function TransactionDetail() {
               </ul>
             </div>
           </div>
+          
+          {/* Model Açıklaması (XAI) */}
+          {txn.xaiReasons && txn.xaiReasons.length > 0 && (
+            <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-6">
+              <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                <Activity className="w-4 h-4 text-purple-400" />
+                Model Açıklaması (XAI)
+              </h3>
+
+              <div className="space-y-5">
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Model Gerekçeleri</p>
+                  <ul className="space-y-2">
+                    {txn.xaiReasons.map((reason, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0 mt-1.5" />
+                        <span className="text-sm text-slate-300">{reason}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {txn.featureImportance && txn.featureImportance.length > 0 && (
+                  <div className="space-y-3 pt-4 border-t border-slate-800/50">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Özellik Etki Dağılımı</p>
+                    <div className="h-48" style={{ width: '100%', height: 300 }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          layout="vertical"
+                          data={txn.featureImportance}
+                          margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
+                        >
+                          <XAxis type="number" hide />
+                          <YAxis 
+                            type="category" 
+                            dataKey="feature" 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                          />
+                          <Tooltip 
+                            cursor={{ fill: '#1e293b' }}
+                            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem' }}
+                            itemStyle={{ color: '#e2e8f0' }}
+                          />
+                          <Bar dataKey="impact" radius={[0, 4, 4, 0]} barSize={20}>
+                            {txn.featureImportance.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill="#a855f7" />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           
         </div>
       </div>
