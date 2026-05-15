@@ -1,5 +1,7 @@
-import { NavLink, useLocation } from 'react-router-dom'
-import { Bell, Search, User, ChevronDown, ShieldCheck, LayoutDashboard, ArrowLeftRight, Network, FileBarChart } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Bell, Search, User, ChevronDown, ShieldCheck, LayoutDashboard, ArrowLeftRight, Network, FileBarChart, LogOut, Settings } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 
 const navItems = [
   {
@@ -26,6 +28,25 @@ const navItems = [
 
 function Navbar() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { logout } = useAuth()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <header className="h-[72px] bg-[#0b1120] border-b border-slate-800/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-between px-6 shrink-0 z-50">
@@ -99,21 +120,55 @@ function Navbar() {
         <div className="w-px h-8 bg-slate-800/60 hidden sm:block" />
 
         {/* Kullanıcı */}
-        <button className="flex items-center gap-2.5 pl-1 pr-2 py-1.5 rounded-lg hover:bg-slate-800/40 transition-all duration-200 group">
-          <div className="relative">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-md shadow-blue-500/15">
-              <User className="w-4 h-4 text-white" />
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2.5 pl-1 pr-2 py-1.5 rounded-lg hover:bg-slate-800/40 transition-all duration-200 group"
+          >
+            <div className="relative">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-md shadow-blue-500/15">
+                <User className="w-4 h-4 text-white" />
+              </div>
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0b1120]" />
             </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0b1120]" />
-          </div>
-          <div className="text-left hidden lg:block">
-            <p className="text-[12px] text-slate-300 font-medium leading-tight group-hover:text-white transition-colors">
-              Uyum Analisti
-            </p>
-            <p className="text-[10px] text-slate-600 leading-tight">Yönetici</p>
-          </div>
-          <ChevronDown className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 transition-colors hidden sm:block" />
-        </button>
+            <div className="text-left hidden lg:block">
+              <p className="text-[12px] text-slate-300 font-medium leading-tight group-hover:text-white transition-colors">
+                Uyum Analisti
+              </p>
+              <p className="text-[10px] text-slate-600 leading-tight">Yönetici</p>
+            </div>
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-600 group-hover:text-slate-400 transition-all duration-200 hidden sm:block ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-56 bg-[#0b1120] border border-slate-700/50 rounded-xl shadow-xl shadow-black/50 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="px-4 py-2 border-b border-slate-800/60 mb-1">
+                <p className="text-sm font-medium text-white">Profil</p>
+                <p className="text-xs text-slate-400 truncate">demo@artech.finance</p>
+              </div>
+              
+              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors">
+                <User className="w-4 h-4 text-slate-400" />
+                Hesabım
+              </button>
+              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors">
+                <Settings className="w-4 h-4 text-slate-400" />
+                Ayarlar
+              </button>
+              
+              <div className="h-px bg-slate-800/60 my-1.5" />
+              
+              <button 
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+              >
+                <LogOut className="w-4 h-4 text-red-400/70" />
+                Çıkış Yap
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   )
