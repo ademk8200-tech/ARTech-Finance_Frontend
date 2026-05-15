@@ -258,7 +258,7 @@ function Dashboard() {
       <div className="grid grid-cols-3 gap-4">
 
         {/* Şüpheli İşlem Trendi — 2 sütun genişliğinde */}
-        <div className="col-span-2 bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', minHeight: 350 }}>
+        <div className="col-span-2 bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', height: 350 }}>
           <div className="flex items-center justify-between mb-5">
             <div>
               <h3 className="text-sm font-semibold text-white">Şüpheli İşlem Trendi</h3>
@@ -325,7 +325,7 @@ function Dashboard() {
         </div>
 
         {/* Risk Dağılımı — 1 sütun genişliğinde */}
-        <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', minHeight: 340 }}>
+        <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-5" style={{ width: '100%', height: 340 }}>
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-white">Risk Dağılımı</h3>
             <p className="text-[11px] text-slate-500 mt-0.5">Toplam {dashboardStats.totalTransactions.toLocaleString('tr-TR')} işlem</p>

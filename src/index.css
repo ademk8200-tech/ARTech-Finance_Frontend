@@ -46,7 +46,8 @@ body {
 }
 
 /* ===== Genel Geçiş Animasyonu ===== */
-a, button {
+a,
+button {
   transition: all 0.2s ease;
 }
 
@@ -55,4 +56,8 @@ a, button {
   outline: 2px solid rgba(59, 130, 246, 0.5);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+.recharts-responsive-container {
+  min-height: 300px;
 }
