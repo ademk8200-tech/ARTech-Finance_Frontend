@@ -109,8 +109,15 @@ const Login = () => {
     }, 700);
   };
 
+  const shimmerStyle = `
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+  `;
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden font-sans text-slate-200">
+      <style>{shimmerStyle}</style>
       
       {/* Canvas Animation */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-50 z-0 pointer-events-none" />
@@ -137,13 +144,16 @@ const Login = () => {
 
       {/* Main Login Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
-        <div className="bg-white/[0.03] backdrop-blur-md border border-white/15 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-white/5 hover:bg-white/[0.05] hover:-translate-y-[2px] transition-all duration-300">
           
           {/* Header */}
           <div className="flex flex-col items-center mb-8">
 
-            <h2 className="text-2xl font-bold text-white mb-2">Denetçi Paneli Girişi</h2>
-            <p className="text-sm text-slate-400 text-center">Hesabınıza erişmek için giriş yapın</p>
+            <div className="text-center mb-2">
+              <span className="block text-xs text-white/40 tracking-[0.3em] font-semibold mb-2">ARTECH FINANCE</span>
+              <h2 className="text-3xl font-serif italic text-white">Denetçi Paneli Girişi</h2>
+            </div>
+            <p className="text-sm text-white/50 text-center">Hesabınıza erişmek için giriş yapın</p>
           </div>
 
           {/* Form */}
@@ -158,7 +168,7 @@ const Login = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
                   placeholder="admin@artech.com"
                   required
                 />
@@ -175,7 +185,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="block w-full pl-10 pr-10 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
                   placeholder="••••••••"
                   required
                 />
@@ -215,8 +225,9 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-black bg-white hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-black transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-6"
+              className="relative overflow-hidden w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-black bg-white hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-black transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed mt-6 group"
             >
+              <div className="absolute inset-0 -translate-x-full group-hover:hidden bg-gradient-to-r from-transparent via-black/10 to-transparent" style={{ animation: 'shimmer 3s infinite linear' }}></div>
               {isLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 mr-2 animate-spin" />
