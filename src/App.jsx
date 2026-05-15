@@ -5,7 +5,6 @@ import Transactions from './pages/Transactions'
 import TransactionDetail from './pages/TransactionDetail'
 import NetworkAnalysis from './pages/NetworkAnalysis'
 import Reports from './pages/Reports'
-import Login from './pages/Login'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -13,7 +12,7 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<div>Login Page</div>} />
         
         <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />

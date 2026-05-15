@@ -1,22 +1,18 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Component mount olduğunda localStorage kontrol et
-    const authStatus = localStorage.getItem('artech_auth');
-    if (authStatus === 'true') {
+    const authState = localStorage.getItem('artech_auth');
+    if (authState === 'true') {
       setIsAuthenticated(true);
     }
-    setLoading(false);
   }, []);
 
   const login = () => {
-    // TODO: Gerçek auth için backend /auth/login endpoint'i kullanılacak
     localStorage.setItem('artech_auth', 'true');
     setIsAuthenticated(true);
   };
@@ -25,8 +21,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('artech_auth');
     setIsAuthenticated(false);
   };
-
-  if (loading) return null; // Veya loading spinner
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
