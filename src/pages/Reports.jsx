@@ -39,7 +39,7 @@ function Reports() {
     <div className="space-y-6">
       {loading && (
         <div className="flex items-center justify-center h-32">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
@@ -47,7 +47,7 @@ function Reports() {
         <>
           <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <FileBarChart className="w-8 h-8 text-blue-400" />
+          <FileBarChart className="w-8 h-8 text-white" />
           <div>
             <h1 className="text-2xl font-bold text-white">Raporlar (SAR & STR)</h1>
             <p className="text-sm text-slate-400">Şüpheli İşlem Bildirimi (STR) adayları ve inceleme bekleyen işlemler</p>
@@ -56,11 +56,11 @@ function Reports() {
       </div>
 
       {/* 2. Arayüz Tasarımı (Ana Tablo) */}
-      <div className="bg-slate-900 border border-slate-700/50 rounded-xl overflow-hidden shadow-lg">
+      <div className="bg-black border border-white/10 rounded-xl overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-800/50 border-b border-slate-700/50">
+              <tr className="bg-white/5 border-b border-white/10">
                 <th className="p-4 text-sm font-semibold text-slate-300">İşlem ID</th>
                 <th className="p-4 text-sm font-semibold text-slate-300">Tarih</th>
                 <th className="p-4 text-sm font-semibold text-slate-300">Tutar</th>
@@ -70,9 +70,9 @@ function Reports() {
                 <th className="p-4 text-sm font-semibold text-slate-300 text-right">Aksiyon</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/50">
+            <tbody className="divide-y divide-white/10">
               {filteredTransactions.map((tx) => (
-                <tr key={tx.id} className="hover:bg-slate-800/50 transition-colors">
+                <tr key={tx.id} className="hover:bg-white/[0.03] transition-colors">
                   <td className="p-4 text-sm font-medium text-slate-200">{tx.id}</td>
                   <td className="p-4 text-sm text-slate-400">
                     {new Date(tx.date).toLocaleDateString('tr-TR', {
@@ -101,7 +101,7 @@ function Reports() {
                   <td className="p-4 text-sm text-right">
                     <button
                       onClick={() => setSelectedTx(tx)}
-                      className="bg-blue-600/80 hover:bg-blue-500 text-white px-3 py-1 rounded transition-colors shadow-[0_0_10px_rgba(37,99,235,0.2)] hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                      className="bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded transition-colors shadow-[0_0_10px_rgba(255,255,255,0.05)] hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                     >
                       İncele
                     </button>
@@ -123,17 +123,17 @@ function Reports() {
       {/* 3. Detay ve Raporlama Paneli (Modal) */}
       {selectedTx && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-zinc-950 border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-slate-800 bg-slate-900/50">
+            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
               <div className="flex items-center gap-3">
                 <ShieldAlert className="w-6 h-6 text-red-500" />
                 <h2 className="text-xl font-bold text-white">Şüpheli İşlem Bildirim (STR) Dosyası</h2>
               </div>
               <button 
                 onClick={() => setSelectedTx(null)}
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -180,10 +180,10 @@ function Reports() {
               </div>
 
               {/* Yapay Zeka Gerekçesi */}
-              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+              <div className="bg-white/5 border border-white/10 rounded-lg p-4 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                 <div className="flex items-center gap-2 mb-3">
-                  <FileText className="w-5 h-5 text-blue-400" />
-                  <h3 className="text-md font-semibold text-blue-100">Yapay Zeka Tespit Gerekçesi</h3>
+                  <FileText className="w-5 h-5 text-white" />
+                  <h3 className="text-md font-semibold text-white">Yapay Zeka Tespit Gerekçesi</h3>
                 </div>
                 <p className="text-sm text-slate-300 leading-relaxed">
                   {selectedTx.explanation}
@@ -193,7 +193,7 @@ function Reports() {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row justify-end items-center gap-4">
+            <div className="p-6 border-t border-white/10 bg-black/80 flex flex-col sm:flex-row justify-end items-center gap-4">
               <button 
                 onClick={() => setSelectedTx(null)}
                 className="text-gray-400 hover:text-white transition-colors font-medium text-sm order-2 sm:order-1"

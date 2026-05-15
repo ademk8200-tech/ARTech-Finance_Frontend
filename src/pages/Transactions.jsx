@@ -133,7 +133,7 @@ function Transactions() {
     <div className="space-y-6">
       {loading && (
         <div className="flex items-center justify-center h-32">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
@@ -142,8 +142,8 @@ function Transactions() {
           {/* ── Başlık ── */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                <ArrowLeftRight className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
+                <ArrowLeftRight className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">İşlemler</h1>
@@ -155,7 +155,7 @@ function Transactions() {
           </div>
 
           {/* ── Filtreler ve Arama ── */}
-          <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+          <div className="bg-black border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             {/* Arama Kutusu */}
             <div className="relative w-full md:w-80">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -163,7 +163,7 @@ function Transactions() {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-3 py-2 border border-slate-700/50 rounded-lg leading-5 bg-slate-900 text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                className="block w-full pl-10 pr-3 py-2 border border-white/10 rounded-lg leading-5 bg-white/5 text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 sm:text-sm transition-colors"
                 placeholder="İşlem ID, Hesap No veya Örüntü Ara..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -172,7 +172,7 @@ function Transactions() {
 
             {/* Seçim Filtreleri */}
             <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-700/50 rounded-lg px-3 py-1.5">
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5">
                 <Filter className="w-4 h-4 text-slate-500" />
                 <select
                   className="bg-transparent border-none text-sm text-slate-300 focus:ring-0 cursor-pointer outline-none"
@@ -186,7 +186,7 @@ function Transactions() {
                 </select>
               </div>
 
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-700/50 rounded-lg px-3 py-1.5">
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5">
                 <AlertTriangle className="w-4 h-4 text-slate-500" />
                 <select
                   className="bg-transparent border-none text-sm text-slate-300 focus:ring-0 cursor-pointer outline-none"
@@ -203,11 +203,11 @@ function Transactions() {
           </div>
 
           {/* ── Tablo Alanı ── */}
-          <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl overflow-hidden">
+          <div className="bg-black border border-white/10 rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-900/50 border-b border-slate-800 text-[12px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <tr className="bg-white/5 border-b border-white/10 text-[12px] font-semibold text-slate-400 uppercase tracking-wider">
                     <th className="px-4 py-3 font-medium">İşlem ID</th>
                     <th className="px-4 py-3 font-medium">Tarih</th>
                     <th className="px-4 py-3 font-medium">Gönderen Hesap</th>
@@ -234,7 +234,7 @@ function Transactions() {
                     <th className="px-4 py-3 font-medium text-center">İşlem</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50 text-sm">
+                <tbody className="divide-y divide-white/10 text-sm">
                   {filteredAndSortedTransactions.length > 0 ? (
                     filteredAndSortedTransactions.map((txn) => {
                       const riskStyle = getRiskColor(txn.riskScore)
@@ -310,7 +310,7 @@ function Transactions() {
                           <td className="px-4 py-3 text-center">
                             <Link
                               to={`/transactions/${txn.id}`}
-                              className="inline-flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"
+                              className="inline-flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
                               title="Detayları Gör"
                             >
                               <ChevronRight className="w-4 h-4" />

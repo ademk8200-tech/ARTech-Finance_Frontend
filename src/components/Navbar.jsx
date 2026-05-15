@@ -16,7 +16,7 @@ const navItems = [
   },
   {
     to: '/network',
-    label: 'Ağ Analizi',
+    label: 'Ağ Yapısı',
     icon: Network,
   },
   {
@@ -74,14 +74,13 @@ function Navbar() {
         {navItems.map((item) => {
           const isTransactionDetail = item.to === '/transactions' && location.pathname.startsWith('/transactions/')
           const isActive = location.pathname === item.to || isTransactionDetail
-          
+
           return (
             <NavLink
               key={item.to}
               to={item.to}
-              className={`relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group ${
-                isActive ? 'text-white bg-white/10' : 'text-white/60 hover:text-white hover:bg-white/5'
-              }`}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group ${isActive ? 'text-white bg-white/10' : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
             >
               <item.icon className="w-4 h-4" />
               <span>{item.label}</span>
@@ -121,7 +120,7 @@ function Navbar() {
 
         {/* Kullanıcı */}
         <div className="relative" ref={dropdownRef}>
-          <button 
+          <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center gap-2.5 pl-1 pr-2 py-1.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
           >
@@ -147,7 +146,7 @@ function Navbar() {
                 <p className="text-sm font-medium text-white">Profil</p>
                 <p className="text-xs text-slate-400 truncate">demo@artech.finance</p>
               </div>
-              
+
               <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">
                 <User className="w-4 h-4 text-slate-400" />
                 Hesabım
@@ -156,10 +155,10 @@ function Navbar() {
                 <Settings className="w-4 h-4 text-slate-400" />
                 Ayarlar
               </button>
-              
+
               <div className="h-px bg-white/10 my-1.5" />
-              
-              <button 
+
+              <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
               >

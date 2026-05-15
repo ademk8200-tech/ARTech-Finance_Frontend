@@ -146,7 +146,7 @@ function TransactionDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     )
   }
@@ -159,7 +159,7 @@ function TransactionDetail() {
         <p className="text-slate-400">Aradığınız {id} numaralı işlem sistemde mevcut değil.</p>
         <button
           onClick={() => navigate('/transactions')}
-          className="px-4 py-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors"
+          className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
         >
           İşlemlere Dön
         </button>
@@ -179,7 +179,7 @@ function TransactionDetail() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/transactions')}
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border border-slate-700/50"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors border border-white/10"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -196,15 +196,15 @@ function TransactionDetail() {
         
         {/* Aksiyon Butonları */}
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors text-sm font-medium border border-slate-700">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium border border-white/10">
             <CheckCircle className="w-4 h-4 text-emerald-400" />
             Normal İşaretle
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors text-sm font-medium border border-blue-500/20">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors text-sm font-medium border border-white/10">
             <Activity className="w-4 h-4" />
             İncelemeye Al
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors text-sm font-medium shadow-lg shadow-blue-500/20">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black hover:bg-white/80 transition-colors text-sm font-medium shadow-lg shadow-white/10">
             <FileText className="w-4 h-4" />
             Rapor Oluştur
           </button>
@@ -217,9 +217,9 @@ function TransactionDetail() {
         <div className="lg:col-span-2 space-y-6">
           
           {/* İşlem Özeti Kartı */}
-          <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-6">
+          <div className="bg-black border border-white/10 rounded-2xl p-6">
             <h3 className="text-sm font-semibold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-blue-400" />
+              <CreditCard className="w-4 h-4 text-white" />
               İşlem Özeti
             </h3>
             
@@ -247,19 +247,19 @@ function TransactionDetail() {
 
               <div>
                 <p className="text-xs text-slate-500 mb-1">Tespit Edilen Örüntü</p>
-                <span className="inline-flex items-center px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">
+                <span className="inline-flex items-center px-2.5 py-1 rounded bg-white/10 text-slate-300 text-xs font-medium border border-white/20">
                   {txn.pattern}
                 </span>
               </div>
             </div>
             
-            <div className="mt-8 pt-6 border-t border-slate-800/50">
+            <div className="mt-8 pt-6 border-t border-white/10">
               <div className="flex items-center justify-between relative">
                 
                 {/* Gönderen */}
                 <div className="w-2/5">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
                       {senderAcc.accountType === 'Bireysel' ? (
                         <User className="w-5 h-5 text-slate-400" />
                       ) : (
@@ -271,7 +271,7 @@ function TransactionDetail() {
                       <p className="text-sm font-bold text-white">{senderAcc.ownerName}</p>
                     </div>
                   </div>
-                  <p className="text-xs font-mono text-slate-400 bg-slate-800/50 px-2 py-1 rounded inline-block">
+                  <p className="text-xs font-mono text-slate-400 bg-white/5 px-2 py-1 rounded inline-block">
                     {txn.senderAccount}
                   </p>
                 </div>
@@ -279,16 +279,16 @@ function TransactionDetail() {
                 {/* Ok */}
                 <div className="flex-1 flex justify-center">
                   <div className="w-full flex items-center">
-                    <div className="h-px bg-slate-700 w-full" />
+                    <div className="h-px bg-white/10 w-full" />
                     <ArrowRight className="w-5 h-5 text-slate-500 shrink-0 mx-2" />
-                    <div className="h-px bg-slate-700 w-full" />
+                    <div className="h-px bg-white/10 w-full" />
                   </div>
                 </div>
 
                 {/* Alıcı */}
                 <div className="w-2/5 flex flex-col items-end text-right">
                   <div className="flex items-center gap-3 mb-3 flex-row-reverse">
-                    <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
                       {receiverAcc.accountType === 'Bireysel' ? (
                         <User className="w-5 h-5 text-slate-400" />
                       ) : (
@@ -300,7 +300,7 @@ function TransactionDetail() {
                       <p className="text-sm font-bold text-white">{receiverAcc.ownerName}</p>
                     </div>
                   </div>
-                  <p className="text-xs font-mono text-slate-400 bg-slate-800/50 px-2 py-1 rounded inline-block">
+                  <p className="text-xs font-mono text-slate-400 bg-white/5 px-2 py-1 rounded inline-block">
                     {txn.receiverAccount}
                   </p>
                 </div>
@@ -310,14 +310,14 @@ function TransactionDetail() {
           </div>
 
           {/* Bağlantılı Hesapların Risk Durumu */}
-          <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-6">
+          <div className="bg-black border border-white/10 rounded-2xl p-6">
              <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider flex items-center gap-2">
-              <Activity className="w-4 h-4 text-blue-400" />
+              <Activity className="w-4 h-4 text-white" />
               Hesap Risk Profilleri
             </h3>
             
             <div className="grid grid-cols-2 gap-6">
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+              <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                 <p className="text-xs text-slate-500 mb-2">Gönderen Hesap Riski</p>
                 <div className="flex items-center justify-between">
                   <span className={`text-sm font-bold ${getRiskColor(senderAcc.riskScore).text}`}>
@@ -325,7 +325,7 @@ function TransactionDetail() {
                   </span>
                   <span className="text-lg font-bold text-white">{senderAcc.riskScore}/100</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-slate-800 mt-3 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-white/10 mt-3 overflow-hidden">
                   <div 
                     className={`h-full rounded-full ${getRiskColor(senderAcc.riskScore).bar}`}
                     style={{ width: `${senderAcc.riskScore}%` }}
@@ -333,7 +333,7 @@ function TransactionDetail() {
                 </div>
               </div>
               
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+              <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                 <p className="text-xs text-slate-500 mb-2">Alıcı Hesap Riski</p>
                 <div className="flex items-center justify-between">
                   <span className={`text-sm font-bold ${getRiskColor(receiverAcc.riskScore).text}`}>
@@ -341,7 +341,7 @@ function TransactionDetail() {
                   </span>
                   <span className="text-lg font-bold text-white">{receiverAcc.riskScore}/100</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-slate-800 mt-3 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-white/10 mt-3 overflow-hidden">
                   <div 
                     className={`h-full rounded-full ${getRiskColor(receiverAcc.riskScore).bar}`}
                     style={{ width: `${receiverAcc.riskScore}%` }}
@@ -357,7 +357,7 @@ function TransactionDetail() {
         <div className="space-y-6">
           
           {/* AI Risk Skoru */}
-          <div className={`bg-[#0d1526] border ${riskStyle.border} rounded-2xl p-6 relative overflow-hidden`}>
+          <div className={`bg-black border ${riskStyle.border} rounded-2xl p-6 relative overflow-hidden`}>
             {/* Arka plan glow efekti */}
             <div className={`absolute top-0 right-0 w-32 h-32 ${riskStyle.bg} blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 opacity-50`} />
             
@@ -381,13 +381,13 @@ function TransactionDetail() {
           </div>
 
           {/* Bu işlem neden riskli? */}
-          <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-6">
+          <div className="bg-black border border-white/10 rounded-2xl p-6">
             <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-amber-400" />
               Bu işlem neden riskli?
             </h3>
             
-            <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 mb-5">
+            <div className="bg-white/5 p-4 rounded-xl border border-white/10 mb-5">
               <p className="text-sm text-slate-300 leading-relaxed flex gap-3">
                 <Info className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
                 {txn.explanation}
@@ -409,9 +409,9 @@ function TransactionDetail() {
           
           {/* Model Açıklaması (XAI) */}
           {txn.xaiReasons && txn.xaiReasons.length > 0 && (
-            <div className="bg-[#0d1526] border border-slate-800/50 rounded-2xl p-6">
+            <div className="bg-black border border-white/10 rounded-2xl p-6">
               <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-purple-400" />
+                <Activity className="w-4 h-4 text-white" />
                 Model Açıklaması (XAI)
               </h3>
 
@@ -429,7 +429,7 @@ function TransactionDetail() {
                 </div>
 
                 {txn.featureImportance && txn.featureImportance.length > 0 && (
-                  <div className="space-y-3 pt-4 border-t border-slate-800/50">
+                  <div className="space-y-3 pt-4 border-t border-white/10">
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Özellik Etki Dağılımı</p>
                     <div className="h-48" style={{ width: '100%', height: 300 }}>
                       <ResponsiveContainer width="100%" height="100%">
@@ -453,7 +453,7 @@ function TransactionDetail() {
                           />
                           <Bar dataKey="impact" radius={[0, 4, 4, 0]} barSize={20}>
                             {txn.featureImportance.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill="#a855f7" />
+                              <Cell key={`cell-${index}`} fill="#ffffff" />
                             ))}
                           </Bar>
                         </BarChart>
