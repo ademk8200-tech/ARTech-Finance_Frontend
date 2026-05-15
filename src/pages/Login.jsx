@@ -36,7 +36,7 @@ const Login = () => {
         this.vx = (Math.random() - 0.5) * 1;
         this.vy = (Math.random() - 0.5) * 1;
         this.radius = Math.random() * 2 + 1;
-        this.color = Math.random() > 0.5 ? '#3b82f6' : '#8b5cf6'; // Blue or Purple
+        this.color = '#ffffff';
       }
 
       update() {
@@ -76,7 +76,7 @@ const Login = () => {
 
           if (distance < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(139, 92, 246, ${1 - distance / 120})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 120})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -110,14 +110,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1c] flex items-center justify-center relative overflow-hidden font-sans text-slate-200">
+    <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden font-sans text-slate-200">
       
       {/* Canvas Animation */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-50 z-0 pointer-events-none" />
 
-      {/* Background Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/20 blur-[120px] pointer-events-none"></div>
+
 
       {/* Top Left Brand */}
       <div className="absolute top-6 left-8 flex items-center gap-2 z-10">
@@ -219,7 +217,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-6"
+              className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-black bg-white hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-black transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-6"
             >
               {isLoading ? (
                 <>
