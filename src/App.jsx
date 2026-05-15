@@ -7,12 +7,13 @@ import NetworkAnalysis from './pages/NetworkAnalysis'
 import Reports from './pages/Reports'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import Login from './pages/Login'
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/login" element={<div>Login Page</div>} />
+        <Route path="/login" element={<Login />} />
         
         <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
