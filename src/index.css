@@ -9,7 +9,7 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #080d19;
+  background-color: #000000;
   color: #e2e8f0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -31,17 +31,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ===== Seçim Rengi ===== */
 ::selection {
-  background-color: rgba(59, 130, 246, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
   color: #e2e8f0;
 }
 
@@ -53,7 +53,7 @@ button {
 
 /* ===== Focus Stili ===== */
 *:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
   border-radius: 4px;
 }

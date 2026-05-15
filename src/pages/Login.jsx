@@ -25,7 +25,7 @@ const Login = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    
+
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -100,7 +100,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulate 700ms loading
     setTimeout(() => {
       login();
@@ -118,7 +118,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden font-sans text-slate-200">
       <style>{shimmerStyle}</style>
-      
+
       {/* Canvas Animation */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-50 z-0 pointer-events-none" />
 
@@ -145,13 +145,13 @@ const Login = () => {
       {/* Main Login Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-white/5 hover:bg-white/[0.05] hover:-translate-y-[2px] transition-all duration-300">
-          
+
           {/* Header */}
           <div className="flex flex-col items-center mb-8">
 
             <div className="text-center mb-2">
               <span className="block text-xs text-white/40 tracking-[0.3em] font-semibold mb-2">ARTECH FINANCE</span>
-              <h2 className="text-3xl font-serif italic text-white">Denetçi Paneli Girişi</h2>
+              <h2 className="text-3xl font-serif italic text-white">Panel Girişi</h2>
             </div>
             <p className="text-sm text-white/50 text-center">Hesabınıza erişmek için giriş yapın</p>
           </div>
@@ -169,7 +169,6 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
-                  placeholder="admin@artech.com"
                   required
                 />
               </div>
@@ -186,7 +185,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full pl-10 pr-10 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
-                  placeholder="••••••••"
+
                   required
                 />
                 <button
@@ -240,7 +239,7 @@ const Login = () => {
           </form>
 
         </div>
-        
+
         {/* Demo Notice */}
         <div className="mt-8 text-center">
           <div className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-white/5 border border-white/10">

@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 
 function Layout() {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#0a1022]">
+    <div className="flex flex-col h-screen overflow-hidden bg-black">
       {/* Üst Menü (Navbar) */}
       <Navbar />
 
@@ -15,7 +15,7 @@ function Layout() {
       </main>
 
       {/* Alt Bilgi Çizgisi */}
-      <footer className="px-6 py-3 border-t border-slate-800/40 bg-[#080d19] shrink-0">
+      <footer className="px-6 py-3 border-t border-white/10 bg-black shrink-0">
         <div className="flex items-center justify-between max-w-[1600px] mx-auto">
           <p className="text-[10px] text-slate-700">
             © 2026 ARTech Finance — Yapay Zeka Tabanlı Dinamik Kara Para Takip Sistemi
