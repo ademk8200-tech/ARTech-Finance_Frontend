@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Graph } from '@antv/g6';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import * as d3 from 'd3';
 import { getNetworkData } from '../services/networkService';
 import { RefreshCw, Maximize, Network, AlertTriangle, Activity, ShieldCheck } from 'lucide-react';
 
-// MiroFish Color Palette
+// MiroFish renk paleti (referansla aynı)
 const MIRO_COLORS = ['#FF6B35', '#004E89', '#7B2D8E', '#1A936F', '#C5283D', '#E9724C'];
 const ENTITY_TYPES = ["Bireysel", "Kurumsal", "Yurtdışı", "Kripto Borsası", "Paravan Şirket", "Offshore"];
 const TYPE_COLOR_MAP = ENTITY_TYPES.reduce((acc, type, idx) => {
@@ -13,225 +13,333 @@ const TYPE_COLOR_MAP = ENTITY_TYPES.reduce((acc, type, idx) => {
 
 function NetworkAnalysis() {
   const containerRef = useRef(null);
-  const graphRef = useRef(null);
-  const showEdgeLabelsRef = useRef(true);
+  const svgRef = useRef(null);
+  const simulationRef = useRef(null);
+  const linkLabelGroupRef = useRef(null);
+
+  const [networkData, setNetworkData] = useState({ nodes: [], edges: [] });
   const [selectedNodeData, setSelectedNodeData] = useState(null);
   const [showEdgeLabels, setShowEdgeLabels] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const [networkData, setNetworkData] = useState({ nodes: [], edges: [] });
-
-  // TODO: Bir node seçildiğinde, eğer işlem detayı arasında importantNodes/importantEdges varsa onları kırmızı border ile vurgulamak için kod eklenecek.
-
+  // Veri çek
   useEffect(() => {
-    getNetworkData().then(data => setNetworkData(data || { nodes: [], edges: [] }));
+    setLoading(true);
+    getNetworkData()
+      .then(data => setNetworkData(data || { nodes: [], edges: [] }))
+      .finally(() => setLoading(false));
   }, []);
 
-  // Mock data oluştur
-  const buildData = useCallback(() => {
-    const rawNodes = JSON.parse(JSON.stringify(networkData.nodes || []));
-    const rawEdges = JSON.parse(JSON.stringify(networkData.edges || []));
+  const renderGraph = useCallback(() => {
+    if (!svgRef.current || !containerRef.current) return;
+    if (!networkData.nodes || networkData.nodes.length === 0) return;
 
-    const baseNodes = rawNodes.map(n => ({ ...n, id: String(n.id) }));
-    const baseEdges = rawEdges.map(e => ({
-      ...e,
-      source: String(typeof e.source === 'object' ? e.source.id : e.source),
-      target: String(typeof e.target === 'object' ? e.target.id : e.target),
+    const container = containerRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    // Veriyi normalize et + curvature hesapla (multi-edge için)
+    const nodes = networkData.nodes.map(n => ({
+      ...n,
+      id: String(n.id),
     }));
+    const validIds = new Set(nodes.map(n => n.id));
 
-    const allNodes = baseNodes;
-    const validIds = new Set(allNodes.map(n => n.id));
+    const rawEdges = networkData.edges
+      .map(e => ({
+        ...e,
+        source: String(typeof e.source === 'object' ? e.source.id : e.source),
+        target: String(typeof e.target === 'object' ? e.target.id : e.target),
+      }))
+      .filter(e => validIds.has(e.source) && validIds.has(e.target));
 
-    const allEdges = baseEdges.filter(e => validIds.has(e.source) && validIds.has(e.target));
-
-    // G6 v5 format: { id, data } for nodes, { id, source, target, data } for edges
-    return {
-      nodes: allNodes.map(n => ({ id: n.id, data: { ...n } })),
-      edges: allEdges.map((e, idx) => ({
-        id: `edge-${idx}`,
-        source: e.source,
-        target: e.target,
-        data: { amount: e.amount },
-      })),
-    };
-  }, [networkData]);
-
-  // Tüm state'leri temizle
-  const clearStates = (graph) => {
-    const states = {};
-    graph.getNodeData().forEach(n => { states[n.id] = []; });
-    graph.getEdgeData().forEach(e => { states[e.id] = []; });
-    graph.setElementState(states);
-  };
-
-  // Graph'ı başlat
-  useEffect(() => {
-    if (!containerRef.current || graphRef.current) return;
-
-    const initGraph = async () => {
-      setLoading(true);
-      const data = buildData();
-      const { width, height } = containerRef.current.getBoundingClientRect();
-
-      const graph = new Graph({
-        container: containerRef.current,
-        width: width || 800,
-        height: height || 600,
-        data,
-        node: {
-          style: {
-            size: 18,
-            fill: (d) => TYPE_COLOR_MAP[d.data?.type] || '#999',
-            stroke: '#fff',
-            lineWidth: 1.5,
-            labelText: (d) => {
-              const name = d.data?.label || d.data?.ownerName || d.id;
-              return name.length > 14 ? name.substring(0, 14) + '…' : name;
-            },
-            labelPlacement: 'right',
-            labelOffsetX: 4,
-            labelFontSize: 11,
-            labelFill: '#333',
-            labelFontWeight: 500,
-            cursor: 'pointer',
-          },
-          state: {
-            selected: {
-              stroke: '#E91E63',
-              lineWidth: 3,
-              size: 22,
-              shadowColor: 'rgba(233, 30, 99, 0.3)',
-              shadowBlur: 10,
-            },
-          },
-        },
-        edge: {
-          style: {
-            stroke: '#c0c0c0',
-            lineWidth: 1.5,
-            endArrow: true,
-            endArrowSize: 5,
-            labelText: (d) =>
-              showEdgeLabelsRef.current && d.data?.amount != null
-                ? `${d.data.amount.toLocaleString('tr-TR')} ₺`
-                : '',
-            labelFontSize: 9,
-            labelFill: '#666',
-            labelBackground: true,
-            labelBackgroundFill: 'rgba(255,255,255,0.95)',
-            labelBackgroundRadius: 3,
-            labelPadding: [2, 4],
-          },
-          state: {
-            highlight: {
-              stroke: '#E91E63',
-              lineWidth: 2.5,
-            },
-            dim: {
-              stroke: '#e2e8f0',
-              lineWidth: 1,
-            },
-          },
-        },
-        layout: {
-          type: 'd3-force',
-          link: { distance: 130 },
-          manyBody: { strength: -500 },
-          collide: { radius: 25 }, // Çakışma engelleme - G6 native
-          center: { strength: 0.05 },
-        },
-        behaviors: ['drag-canvas', 'zoom-canvas', 'drag-element'],
-        animation: false,
-      });
-
-      // Node tıklama
-      graph.on('node:click', (evt) => {
-        const id = evt.target.id;
-        const nodeData = graph.getNodeData(id);
-        setSelectedNodeData(nodeData.data);
-
-        clearStates(graph);
-
-        const states = { [id]: ['selected'] };
-        const related = graph.getRelatedEdgesData(id);
-        related.forEach(e => {
-          states[e.id] = ['highlight'];
-        });
-        graph.setElementState(states);
-      });
-
-      // Boş alan tıklama
-      graph.on('canvas:click', () => {
-        setSelectedNodeData(null);
-        clearStates(graph);
-      });
-
-      // Node sürükleme bitince layout'u yeniden tetikle - diğer node'lar yerleşir
-      let layoutRunning = false;
-      const triggerReLayout = async () => {
-        if (layoutRunning) return;
-        layoutRunning = true;
-        try {
-          await graph.layout();
-        } catch (err) {
-          // sessizce yut
-        }
-        layoutRunning = false;
-      };
-      graph.on('node:dragend', triggerReLayout);
-      graph.on('element:dragend', triggerReLayout);
-
-      graphRef.current = graph;
-      await graph.render();
-      setLoading(false);
-    };
-
-    initGraph();
-
-    return () => {
-      if (graphRef.current) {
-        graphRef.current.destroy();
-        graphRef.current = null;
-      }
-    };
-  }, [buildData]);
-
-  // Container resize handler
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver(() => {
-      if (graphRef.current && containerRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect();
-        if (width > 0 && height > 0) {
-          graphRef.current.setSize(width, height);
-        }
-      }
+    // Aynı node çifti arası birden çok edge varsa eğri hesapla
+    const pairCount = {};
+    const pairIdx = {};
+    rawEdges.forEach(e => {
+      const key = [e.source, e.target].sort().join('__');
+      pairCount[key] = (pairCount[key] || 0) + 1;
     });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+    const edges = rawEdges.map(e => {
+      const key = [e.source, e.target].sort().join('__');
+      const total = pairCount[key];
+      const idx = pairIdx[key] || 0;
+      pairIdx[key] = idx + 1;
+      let curvature = 0;
+      if (total > 1) {
+        const range = Math.min(1.2, 0.6 + total * 0.15);
+        curvature = ((idx / (total - 1)) - 0.5) * range * 2;
+        if (e.source > e.target) curvature = -curvature;
+      }
+      return { ...e, curvature };
+    });
+
+    // SVG temizle
+    const svg = d3.select(svgRef.current);
+    svg.selectAll('*').remove();
+    svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+    // Zoom destekli ana grup
+    const g = svg.append('g');
+
+    svg.call(
+      d3.zoom()
+        .extent([[0, 0], [width, height]])
+        .scaleExtent([0.2, 4])
+        .on('zoom', (event) => {
+          g.attr('transform', event.transform);
+        })
+    );
+
+    // d3-force simülasyonu (MiroFish ile aynı parametreler)
+    const simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(edges).id(d => d.id).distance(120))
+      .force('charge', d3.forceManyBody().strength(-400))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collide', d3.forceCollide(28))
+      .force('x', d3.forceX(width / 2).strength(0.04))
+      .force('y', d3.forceY(height / 2).strength(0.04));
+
+    simulationRef.current = simulation;
+
+    // ---- Link path hesaplayıcısı (curvature destekli) ----
+    const getLinkPath = (d) => {
+      const sx = d.source.x ?? 0;
+      const sy = d.source.y ?? 0;
+      const tx = d.target.x ?? 0;
+      const ty = d.target.y ?? 0;
+      if (!d.curvature) {
+        return `M${sx},${sy} L${tx},${ty}`;
+      }
+      const dx = tx - sx;
+      const dy = ty - sy;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const offsetRatio = 0.25;
+      const baseOffset = Math.max(35, dist * offsetRatio);
+      const offsetX = -dy / dist * d.curvature * baseOffset;
+      const offsetY = dx / dist * d.curvature * baseOffset;
+      const cx = (sx + tx) / 2 + offsetX;
+      const cy = (sy + ty) / 2 + offsetY;
+      return `M${sx},${sy} Q${cx},${cy} ${tx},${ty}`;
+    };
+
+    const getLinkMid = (d) => {
+      const sx = d.source.x ?? 0;
+      const sy = d.source.y ?? 0;
+      const tx = d.target.x ?? 0;
+      const ty = d.target.y ?? 0;
+      if (!d.curvature) {
+        return { x: (sx + tx) / 2, y: (sy + ty) / 2 };
+      }
+      const dx = tx - sx;
+      const dy = ty - sy;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const baseOffset = Math.max(35, dist * 0.25);
+      const offsetX = -dy / dist * d.curvature * baseOffset;
+      const offsetY = dx / dist * d.curvature * baseOffset;
+      const cx = (sx + tx) / 2 + offsetX;
+      const cy = (sy + ty) / 2 + offsetY;
+      return { x: 0.25 * sx + 0.5 * cx + 0.25 * tx, y: 0.25 * sy + 0.5 * cy + 0.25 * ty };
+    };
+
+    // ---- Edges (path olarak çiz) ----
+    const linkGroup = g.append('g').attr('class', 'links');
+
+    const link = linkGroup.selectAll('path.edge')
+      .data(edges)
+      .enter().append('path')
+      .attr('class', 'edge')
+      .attr('stroke', '#C0C0C0')
+      .attr('stroke-width', 1.5)
+      .attr('fill', 'none')
+      .attr('marker-end', 'url(#arrow)')
+      .style('cursor', 'pointer');
+
+    // Ok başı tanımı
+    svg.append('defs').append('marker')
+      .attr('id', 'arrow')
+      .attr('viewBox', '0 0 10 10')
+      .attr('refX', 18)
+      .attr('refY', 5)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto-start-reverse')
+      .append('path')
+      .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+      .attr('fill', '#C0C0C0');
+
+    // Edge label arka planı
+    const linkLabelBg = linkGroup.selectAll('rect.edge-label-bg')
+      .data(edges)
+      .enter().append('rect')
+      .attr('class', 'edge-label-bg')
+      .attr('fill', 'rgba(255,255,255,0.95)')
+      .attr('stroke', 'rgba(0,0,0,0.1)')
+      .attr('rx', 3)
+      .attr('ry', 3)
+      .style('display', showEdgeLabels ? 'block' : 'none');
+
+    // Edge label metin
+    const linkLabels = linkGroup.selectAll('text.edge-label')
+      .data(edges)
+      .enter().append('text')
+      .attr('class', 'edge-label')
+      .text(d => d.amount != null ? `${Number(d.amount).toLocaleString('tr-TR')} ₺` : (d.label || ''))
+      .attr('font-size', '9px')
+      .attr('fill', '#555')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .style('font-family', 'system-ui, sans-serif')
+      .style('pointer-events', 'none')
+      .style('display', showEdgeLabels ? 'block' : 'none');
+
+    linkLabelGroupRef.current = { linkLabelBg, linkLabels };
+
+    // ---- Nodes ----
+    const nodeGroup = g.append('g').attr('class', 'nodes');
+
+    const node = nodeGroup.selectAll('circle')
+      .data(nodes)
+      .enter().append('circle')
+      .attr('r', 10)
+      .attr('fill', d => TYPE_COLOR_MAP[d.type || d.accountType] || '#999')
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 2.5)
+      .style('cursor', 'pointer')
+      .call(
+        d3.drag()
+          .on('start', (event, d) => {
+            // MiroFish mantığı: önce sadece pozisyonu fixle, sürükleme tespit edilince simülasyonu ısıt
+            d.fx = d.x;
+            d.fy = d.y;
+            d._dragStartX = event.x;
+            d._dragStartY = event.y;
+            d._isDragging = false;
+          })
+          .on('drag', (event, d) => {
+            const dx = event.x - d._dragStartX;
+            const dy = event.y - d._dragStartY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (!d._isDragging && distance > 3) {
+              d._isDragging = true;
+              simulation.alphaTarget(0.3).restart();
+            }
+            if (d._isDragging) {
+              d.fx = event.x;
+              d.fy = event.y;
+            }
+          })
+          .on('end', (event, d) => {
+            if (d._isDragging) {
+              simulation.alphaTarget(0);
+            }
+            d.fx = null;
+            d.fy = null;
+            d._isDragging = false;
+          })
+      )
+      .on('click', (event, d) => {
+        event.stopPropagation();
+        // Tüm node'ları default'a döndür
+        node.attr('stroke', '#fff').attr('stroke-width', 2.5);
+        link.attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
+
+        // Seçilen node'u vurgula
+        d3.select(event.currentTarget).attr('stroke', '#E91E63').attr('stroke-width', 4);
+
+        // Bağlı edge'leri vurgula
+        link.filter(l => l.source.id === d.id || l.target.id === d.id)
+          .attr('stroke', '#E91E63')
+          .attr('stroke-width', 2.5);
+
+        setSelectedNodeData(d);
+      });
+
+    // Node label
+    const nodeLabels = nodeGroup.selectAll('text')
+      .data(nodes)
+      .enter().append('text')
+      .text(d => {
+        const name = d.label || d.ownerName || d.id;
+        return name.length > 14 ? name.substring(0, 14) + '…' : name;
+      })
+      .attr('font-size', '11px')
+      .attr('font-weight', 500)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'hanging')
+      .attr('dy', 14)
+      .attr('fill', '#333')
+      .style('pointer-events', 'none')
+      .style('font-family', 'system-ui, sans-serif');
+
+    // ---- tick callback ----
+    simulation.on('tick', () => {
+      link.attr('d', getLinkPath);
+
+      // Label arka planları ölçü için her tick'te yeniden boyutlandırılır
+      linkLabels
+        .attr('x', d => getLinkMid(d).x)
+        .attr('y', d => getLinkMid(d).y);
+
+      linkLabelBg.each(function (d, i) {
+        const labelEl = linkLabels.nodes()[i];
+        if (!labelEl || labelEl.style.display === 'none') return;
+        const bbox = labelEl.getBBox();
+        const mid = getLinkMid(d);
+        d3.select(this)
+          .attr('x', mid.x - bbox.width / 2 - 4)
+          .attr('y', mid.y - bbox.height / 2 - 2)
+          .attr('width', bbox.width + 8)
+          .attr('height', bbox.height + 4);
+      });
+
+      node.attr('cx', d => d.x).attr('cy', d => d.y);
+      nodeLabels.attr('x', d => d.x).attr('y', d => d.y);
+    });
+
+    // Boş alana tıklayınca seçimi kaldır
+    svg.on('click', () => {
+      setSelectedNodeData(null);
+      node.attr('stroke', '#fff').attr('stroke-width', 2.5);
+      link.attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
+    });
+  }, [networkData, showEdgeLabels]);
+
+  // Veri/ekran değişince yeniden çiz
+  useEffect(() => {
+    renderGraph();
+    return () => {
+      if (simulationRef.current) {
+        simulationRef.current.stop();
+      }
+    };
+  }, [renderGraph]);
+
+  // Ekran resize
+  useEffect(() => {
+    const handleResize = () => renderGraph();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [renderGraph]);
 
   // Edge label toggle
   useEffect(() => {
-    showEdgeLabelsRef.current = showEdgeLabels;
-    if (!graphRef.current) return;
-    try {
-      const edges = graphRef.current.getEdgeData();
-      graphRef.current.updateEdgeData(edges.map(e => ({ id: e.id })));
-      graphRef.current.draw();
-    } catch (err) {
-      console.warn('Edge label toggle:', err);
-    }
+    if (!linkLabelGroupRef.current) return;
+    const { linkLabelBg, linkLabels } = linkLabelGroupRef.current;
+    linkLabelBg.style('display', showEdgeLabels ? 'block' : 'none');
+    linkLabels.style('display', showEdgeLabels ? 'block' : 'none');
   }, [showEdgeLabels]);
 
   const handleRefresh = async () => {
-    if (!graphRef.current) return;
     setLoading(true);
     setSelectedNodeData(null);
-    const newData = buildData();
-    graphRef.current.setData(newData);
-    await graphRef.current.render();
-    setLoading(false);
+    try {
+      const data = await getNetworkData();
+      setNetworkData(data || { nodes: [], edges: [] });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getColor = (type) => TYPE_COLOR_MAP[type] || '#999';
@@ -240,17 +348,24 @@ function NetworkAnalysis() {
     <div className="flex flex-col h-[calc(100vh-160px)] space-y-4">
       <div className="flex flex-1 gap-4 min-h-0 overflow-hidden">
 
-        {/* Graph Container */}
-        <div className="flex-1 relative bg-[#f8f9fa] overflow-hidden rounded-xl border border-slate-200 shadow-sm"
+        {/* Graph Container - MiroFish açık arka plan */}
+        <div
+          ref={containerRef}
+          className="flex-1 relative overflow-hidden rounded-xl border border-slate-200 shadow-sm"
           style={{
-            backgroundImage: 'radial-gradient(#d1d5db 1px, transparent 1px)',
-            backgroundSize: '20px 20px'
-          }}>
-
-          <div ref={containerRef} className="absolute inset-0 w-full h-full" />
+            backgroundColor: '#FAFAFA',
+            backgroundImage: 'radial-gradient(#D0D0D0 1.5px, transparent 1.5px)',
+            backgroundSize: '24px 24px'
+          }}
+        >
+          <svg
+            ref={svgRef}
+            className="absolute inset-0 w-full h-full"
+            style={{ touchAction: 'none' }}
+          />
 
           {loading && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/50 backdrop-blur-sm">
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm">
               <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
               <p className="mt-4 text-slate-600 font-medium tracking-wide">Graph Data Loading...</p>
             </div>
