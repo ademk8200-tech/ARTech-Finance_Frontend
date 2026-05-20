@@ -161,14 +161,16 @@ const Login = () => {
             <div className="space-y-1">
               <label className="text-sm font-medium text-slate-300 ml-1">E-posta Adresi</label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-slate-500" />
-                </div>
+                {!email && (
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
+                    <Mail className="h-4 w-4 text-slate-500" />
+                  </div>
+                )}
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
+                  className="block w-full pl-11 pr-3 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
                   required
                 />
               </div>
@@ -177,15 +179,16 @@ const Login = () => {
             <div className="space-y-1">
               <label className="text-sm font-medium text-slate-300 ml-1">Şifre</label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-slate-500" />
-                </div>
+                {!password && (
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
+                    <Lock className="h-4 w-4 text-slate-500" />
+                  </div>
+                )}
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
-
+                  className="block w-full pl-11 pr-10 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/40 transition-all duration-300"
                   required
                 />
                 <button
