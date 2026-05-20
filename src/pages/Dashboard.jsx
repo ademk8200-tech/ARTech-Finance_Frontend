@@ -410,7 +410,7 @@ function Dashboard() {
                 <span className="text-sm text-white font-semibold">
                   {txn.amount.toLocaleString('tr-TR')}
                 </span>
-                <span className="text-xs text-slate-500 ml-1">{txn.currency}</span>
+                <span className="text-xs text-slate-500 ml-2">{txn.currency}</span>
               </div>
 
               {/* Risk Skoru */}

@@ -205,15 +205,27 @@ function Transactions() {
           {/* ── Tablo Alanı ── */}
           <div className="bg-black border border-white/10 rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse" style={{ minWidth: '1200px' }}>
+                <colgroup>
+                  <col style={{ width: '8%' }} />   {/* İşlem ID */}
+                  <col style={{ width: '12%' }} />  {/* Tarih */}
+                  <col style={{ width: '13%' }} />  {/* Gönderen Hesap */}
+                  <col style={{ width: '13%' }} />  {/* Alıcı Hesap */}
+                  <col style={{ width: '14%' }} />  {/* Tutar */}
+                  <col style={{ width: '8%' }} />   {/* Tür */}
+                  <col style={{ width: '10%' }} />  {/* Risk Skoru */}
+                  <col style={{ width: '8%' }} />   {/* Durum */}
+                  <col style={{ width: '10%' }} />  {/* Örüntü */}
+                  <col style={{ width: '4%' }} />   {/* İşlem */}
+                </colgroup>
                 <thead>
                   <tr className="bg-white/5 border-b border-white/10 text-[12px] font-semibold text-slate-400 uppercase tracking-wider">
                     <th className="px-4 py-3 font-medium">İşlem ID</th>
                     <th className="px-4 py-3 font-medium">Tarih</th>
                     <th className="px-4 py-3 font-medium">Gönderen Hesap</th>
                     <th className="px-4 py-3 font-medium">Alıcı Hesap</th>
-                    <th className="px-4 py-3 font-medium text-right pr-8">Tutar</th>
-                    <th className="px-4 py-3 font-medium">Tür</th>
+                    <th className="px-4 py-3 font-medium text-right" style={{ paddingRight: '48px' }}>Tutar</th>
+                    <th className="py-3 font-medium" style={{ paddingLeft: '32px' }}>Tür</th>
                     <th
                       className="px-4 py-3 font-medium cursor-pointer hover:text-slate-300 transition-colors group"
                       onClick={() => handleSort('riskScore')}
@@ -267,15 +279,15 @@ function Transactions() {
                           </td>
 
                           {/* Tutar & Para Birimi */}
-                          <td className="px-4 py-3 text-right whitespace-nowrap pr-8">
+                          <td className="px-4 py-3 text-right whitespace-nowrap" style={{ paddingRight: '48px' }}>
                             <span className="font-semibold text-white">
                               {formatCurrency(txn.amount)}
                             </span>
-                            <span className="text-xs text-slate-500 ml-1">{txn.currency}</span>
+                            <span className="text-xs text-slate-500 ml-2">{txn.currency}</span>
                           </td>
 
                           {/* İşlem Tipi */}
-                          <td className="px-4 py-3 text-slate-400 text-xs">
+                          <td className="py-3 text-slate-400 text-xs" style={{ paddingLeft: '32px' }}>
                             {txn.transactionType}
                           </td>
 
