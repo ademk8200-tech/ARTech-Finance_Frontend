@@ -73,32 +73,32 @@ function Reports() {
             <tbody className="divide-y divide-white/10">
               {filteredTransactions.map((tx) => (
                 <tr key={tx.id} className="hover:bg-white/[0.03] transition-colors">
-                  <td className="p-4 text-sm font-medium text-slate-200">{tx.id}</td>
-                  <td className="p-4 text-sm text-slate-400">
+                  <td className="py-5 px-4 text-sm font-medium text-slate-200">{tx.id}</td>
+                  <td className="py-5 px-4 text-sm text-slate-400">
                     {new Date(tx.date).toLocaleDateString('tr-TR', {
                       day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
                     })}
                   </td>
-                  <td className="p-4 text-sm font-medium text-slate-200">
+                  <td className="py-5 px-4 text-sm font-medium text-slate-200">
                     {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: tx.currency }).format(tx.amount)}
                   </td>
-                  <td className="p-4 text-sm">
+                  <td className="py-5 px-4 text-sm">
                     <span className={getRiskScoreColor(tx.riskScore)}>
                       {tx.riskScore} / 100
                     </span>
                   </td>
-                  <td className="p-4 text-sm">
+                  <td className="py-5 px-4 text-sm">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(tx.status)}`}>
                       {tx.status}
                     </span>
                   </td>
-                  <td className="p-4 text-sm text-slate-300">
+                  <td className="py-5 px-4 text-sm text-slate-300">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-orange-400" />
                       {tx.pattern}
                     </div>
                   </td>
-                  <td className="p-4 text-sm text-right">
+                  <td className="py-5 px-4 text-sm text-right">
                     <button
                       onClick={() => setSelectedTx(tx)}
                       className="bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded transition-colors shadow-[0_0_10px_rgba(255,255,255,0.05)] hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"

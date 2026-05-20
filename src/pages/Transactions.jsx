@@ -222,8 +222,8 @@ function Transactions() {
                   <tr className="bg-white/5 border-b border-white/10 text-[12px] font-semibold text-slate-400 uppercase tracking-wider">
                     <th className="px-4 py-3 font-medium">İşlem ID</th>
                     <th className="px-4 py-3 font-medium">Tarih</th>
-                    <th className="px-4 py-3 font-medium">Gönderen Hesap</th>
-                    <th className="px-4 py-3 font-medium">Alıcı Hesap</th>
+                    <th className="py-3 font-medium" style={{ paddingLeft: '16px', paddingRight: '24px' }}>Gönderen Hesap</th>
+                    <th className="py-3 font-medium" style={{ paddingLeft: '24px', paddingRight: '16px' }}>Alıcı Hesap</th>
                     <th className="px-4 py-3 font-medium text-right" style={{ paddingRight: '48px' }}>Tutar</th>
                     <th className="py-3 font-medium" style={{ paddingLeft: '32px' }}>Tür</th>
                     <th
@@ -269,21 +269,21 @@ function Transactions() {
                           </td>
 
                           {/* Gönderen Hesap */}
-                          <td className="px-4 py-3">
+                          <td className="py-3" style={{ paddingLeft: '16px', paddingRight: '24px' }}>
                             <span className="font-mono text-xs text-slate-400">{txn.senderAccount}</span>
                           </td>
 
                           {/* Alıcı Hesap */}
-                          <td className="px-4 py-3">
+                          <td className="py-3" style={{ paddingLeft: '24px', paddingRight: '16px' }}>
                             <span className="font-mono text-xs text-slate-400">{txn.receiverAccount}</span>
                           </td>
 
                           {/* Tutar & Para Birimi */}
                           <td className="px-4 py-3 text-right whitespace-nowrap" style={{ paddingRight: '48px' }}>
-                            <span className="font-semibold text-white">
+                            <span className="text-sm text-slate-300">
                               {formatCurrency(txn.amount)}
                             </span>
-                            <span className="text-xs text-slate-500 ml-2">{txn.currency}</span>
+                            <span className="text-xs text-slate-500">{' '}{txn.currency}</span>
                           </td>
 
                           {/* İşlem Tipi */}
